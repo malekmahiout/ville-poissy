@@ -1,0 +1,58 @@
+<div class="accessibilite-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #004D40 0%, #006064 100%);">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div>
+      <h1><mat-icon>accessible</mat-icon> Accessibilité</h1>
+      <p>Services adaptés aux personnes en situation de handicap</p>
+    </div>
+  </div>
+
+  <!-- Font size controls -->
+  <div class="font-controls">
+    <span class="font-label"><mat-icon>text_fields</mat-icon> Taille du texte</span>
+    <div class="font-btns">
+      <button (click)="decreaseFontSize()" [disabled]="fontSize <= 0.8">A-</button>
+      <button (click)="resetFontSize()">A</button>
+      <button (click)="increaseFontSize()" [disabled]="fontSize >= 1.5">A+</button>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <div class="section">
+    <h2 class="section-title">Services d'accessibilité</h2>
+    <div class="services-list">
+      <div class="service-card" *ngFor="let s of services" (click)="s.phone ? call(s.phone) : null" matRipple>
+        <div class="service-icon" [style.background]="s.color + '20'">
+          <mat-icon [style.color]="s.color">{{ s.icon }}</mat-icon>
+        </div>
+        <div class="service-info">
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.description }}</p>
+          <div class="phone" *ngIf="s.phone" [style.color]="s.color">
+            <mat-icon>call</mat-icon> {{ s.phone }}
+          </div>
+        </div>
+        <mat-icon class="arrow" *ngIf="s.phone">chevron_right</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility table -->
+  <div class="section">
+    <h2 class="section-title">Équipements des lieux publics</h2>
+    <div class="access-table">
+      <div class="table-header">
+        <span>Lieu</span>
+        <span><mat-icon title="Accès PMR">wheelchair_pickup</mat-icon></span>
+        <span><mat-icon title="Boucle magnétique">hearing</mat-icon></span>
+        <span><mat-icon title="Braille">braille</mat-icon></span>
+      </div>
+      <div class="table-row" *ngFor="let p of accessibilitePoints">
+        <span>{{ p.lieu }}</span>
+        <span><mat-icon [class.yes]="p.PMR" [class.no]="!p.PMR">{{ p.PMR ? 'check_circle' : 'cancel' }}</mat-icon></span>
+        <span><mat-icon [class.yes]="p.boucle" [class.no]="!p.boucle">{{ p.boucle ? 'check_circle' : 'cancel' }}</mat-icon></span>
+        <span><mat-icon [class.yes]="p.braille" [class.no]="!p.braille">{{ p.braille ? 'check_circle' : 'cancel' }}</mat-icon></span>
+      </div>
+    </div>
+  </div>
+</div>

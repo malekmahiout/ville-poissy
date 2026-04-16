@@ -1,0 +1,74 @@
+<div class="detail-page" *ngIf="commerce">
+
+  <div class="detail-header" [style.background]="'linear-gradient(135deg,' + commerce.catCouleur + ' 0%,' + commerce.catCouleur + 'cc 100%)'">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-icon">
+      <mat-icon>{{ commerce.catIcon }}</mat-icon>
+    </div>
+  </div>
+
+  <div class="detail-content">
+    <span class="cat-badge" [style.color]="commerce.catCouleur" [style.background]="commerce.catCouleur + '15'">{{ commerce.categorie }}</span>
+    <h1>{{ commerce.nom }}</h1>
+
+    <!-- Tags -->
+    <div class="tags-row" *ngIf="commerce.tags?.length">
+      <span class="tag" *ngFor="let tag of commerce.tags">{{ tag }}</span>
+    </div>
+
+    <!-- Infos -->
+    <div class="info-cards">
+      <div class="info-card clickable" (click)="ouvrirMaps()" matRipple>
+        <mat-icon [style.color]="commerce.catCouleur">place</mat-icon>
+        <div>
+          <strong>Adresse</strong>
+          <span>{{ commerce.adresse }}</span>
+        </div>
+        <mat-icon class="action-icon">map</mat-icon>
+      </div>
+
+      <div class="info-card clickable" *ngIf="commerce.telephone" (click)="appeler()" matRipple>
+        <mat-icon [style.color]="commerce.catCouleur">phone</mat-icon>
+        <div>
+          <strong>Téléphone</strong>
+          <span>{{ commerce.telephone }}</span>
+        </div>
+        <mat-icon class="action-icon">call</mat-icon>
+      </div>
+
+      <div class="info-card" *ngIf="commerce.horaires">
+        <mat-icon [style.color]="commerce.catCouleur">access_time</mat-icon>
+        <div>
+          <strong>Horaires</strong>
+          <span>{{ commerce.horaires }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="description-box" *ngIf="commerce.description">
+      <h2>À propos</h2>
+      <p>{{ commerce.description }}</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-btns">
+      <button class="btn-primary" *ngIf="commerce.telephone" (click)="appeler()" matRipple>
+        <mat-icon>phone</mat-icon>
+        Appeler
+      </button>
+      <button class="btn-map" (click)="ouvrirMaps()" matRipple>
+        <mat-icon>map</mat-icon>
+        Itinéraire
+      </button>
+    </div>
+
+    <button class="btn-annuaire" (click)="ouvrirSite()" matRipple>
+      <mat-icon>picture_as_pdf</mat-icon>
+      Voir l'annuaire complet des commerces de Poissy
+    </button>
+  </div>
+
+</div>

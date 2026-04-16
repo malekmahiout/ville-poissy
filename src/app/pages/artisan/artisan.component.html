@@ -1,0 +1,76 @@
+<div class="artisan-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-title">
+      <h1><mat-icon>handyman</mat-icon> Artisans</h1>
+      <p>{{ filteredArtisans.length }} artisans à Poissy</p>
+    </div>
+  </div>
+
+  <!-- Bannière promo -->
+  <div class="promo-banner">
+    <mat-icon>build_circle</mat-icon>
+    <div>
+      <strong>Faites appel aux artisans locaux !</strong>
+      <span>Plomberie, électricité, peinture et bien plus</span>
+    </div>
+  </div>
+
+  <!-- Recherche -->
+  <div class="search-bar">
+    <mat-icon>search</mat-icon>
+    <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Rechercher un artisan, un métier…">
+    <button *ngIf="searchQuery" (click)="searchQuery=''; onSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Catégories -->
+  <div class="categories-scroll">
+    <button class="cat-chip" *ngFor="let cat of usedCategories"
+      [class.active]="selectedCategory === cat"
+      (click)="filterByCategory(cat)" matRipple>
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- Liste -->
+  <div class="artisan-list">
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filteredArtisans.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <p>Aucun résultat pour "{{ searchQuery }}"</p>
+    </div>
+
+    <div class="artisan-card" *ngFor="let c of filteredArtisans" (click)="ouvrirDetail(c)" matRipple>
+      <div class="artisan-icon" [style.background]="c.catCouleur + '18'">
+        <mat-icon [style.color]="c.catCouleur">{{ c.catIcon }}</mat-icon>
+      </div>
+      <div class="artisan-info">
+        <div class="artisan-cat" [style.color]="c.catCouleur">{{ c.categorie }}</div>
+        <h3>{{ c.nom }}</h3>
+        <div class="artisan-adresse">
+          <mat-icon>place</mat-icon>
+          <span>{{ c.adresse }}</span>
+        </div>
+        <div class="artisan-horaires" *ngIf="c.horaires">
+          <mat-icon>access_time</mat-icon>
+          <span>{{ c.horaires }}</span>
+        </div>
+      </div>
+      <div class="artisan-actions">
+        <button class="call-btn" *ngIf="c.telephone" (click)="$event.stopPropagation(); appeler(c.telephone!)" matRipple>
+          <mat-icon>phone</mat-icon>
+        </button>
+        <mat-icon class="chevron">chevron_right</mat-icon>
+      </div>
+    </div>
+
+  </div>
+
+</div>

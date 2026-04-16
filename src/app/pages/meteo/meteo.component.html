@@ -1,0 +1,81 @@
+<div class="meteo-page">
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-info">
+      <h1>Météo Poissy</h1>
+      <p>Yvelines (78) — Île-de-France</p>
+    </div>
+    <button class="refresh-btn" (click)="chargerMeteo()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Chargement de la météo...</p>
+  </div>
+
+  <div class="error-state" *ngIf="error && !loading">
+    <mat-icon>cloud_off</mat-icon>
+    <p>Impossible de charger la météo. Vérifiez votre connexion.</p>
+    <button (click)="chargerMeteo()">Réessayer</button>
+  </div>
+
+  <div class="meteo-content" *ngIf="!loading && !error">
+    <!-- Météo actuelle -->
+    <div class="current-card">
+      <div class="current-main">
+        <mat-icon class="weather-icon-large" [style.color]="getWeatherColor(codeMeteoActuel)">
+          {{ getWeatherIcon(codeMeteoActuel) }}
+        </mat-icon>
+        <div class="temp-block">
+          <span class="temp-value">{{ temperatureActuelle }}°</span>
+          <span class="temp-label">{{ getWeatherLabel(codeMeteoActuel) }}</span>
+          <span class="temp-ressenti">Ressenti {{ temperatureRessentie }}°</span>
+        </div>
+      </div>
+      <div class="current-details">
+        <div class="detail-item">
+          <mat-icon>water_drop</mat-icon>
+          <span>{{ humidite }}%</span>
+          <label>Humidité</label>
+        </div>
+        <div class="detail-item">
+          <mat-icon>air</mat-icon>
+          <span>{{ ventKmh }} km/h</span>
+          <label>Vent</label>
+        </div>
+        <div class="detail-item">
+          <mat-icon>grain</mat-icon>
+          <span>{{ precipitation }} mm</span>
+          <label>Précip.</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prévisions 7 jours -->
+    <div class="previsions-section">
+      <h2>Prévisions 7 jours</h2>
+      <div class="previsions-list">
+        <div class="prevision-row" *ngFor="let p of previsions; let i = index" [class.today]="i === 0">
+          <span class="prev-day">{{ getDayLabel(p.date, i) }}</span>
+          <mat-icon [style.color]="getWeatherColor(p.codeMeteo)">{{ getWeatherIcon(p.codeMeteo) }}</mat-icon>
+          <span class="prev-label">{{ getWeatherLabel(p.codeMeteo) }}</span>
+          <div class="prev-temps">
+            <span class="temp-min">{{ p.tempMin }}°</span>
+            <span class="temp-sep">/</span>
+            <span class="temp-max">{{ p.tempMax }}°</span>
+          </div>
+          <div class="prev-rain" *ngIf="p.precipitations > 0">
+            <mat-icon>grain</mat-icon>
+            <span>{{ p.precipitations | number:'1.0-1' }}mm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="source-info">Source : Open-Meteo.com — Données automatiques</p>
+  </div>
+</div>

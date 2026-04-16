@@ -1,0 +1,61 @@
+<div class="numeros-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #4A0072 0%, #880E4F 100%);">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div>
+      <h1><mat-icon>phone</mat-icon> Numéros utiles</h1>
+      <p>Contacts des services de Poissy</p>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <mat-icon>search</mat-icon>
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Rechercher un service..."
+    >
+    <button *ngIf="searchQuery" (click)="searchQuery = ''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-scroll">
+    <button
+      *ngFor="let cat of categories"
+      [class.active]="activeFilter === cat"
+      (click)="activeFilter = cat"
+    >
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- List -->
+  <div class="numeros-list">
+    <div
+      class="numero-card"
+      *ngFor="let n of filteredNumeros"
+      (click)="call(n.numero)"
+      matRipple
+    >
+      <div class="numero-icon" [style.background]="n.color + '20'">
+        <mat-icon [style.color]="n.color">{{ n.icon }}</mat-icon>
+      </div>
+      <div class="numero-info">
+        <div class="service-name">{{ n.service }}</div>
+        <div class="phone-number" [style.color]="n.color">{{ n.numero }}</div>
+        <div class="horaires"><mat-icon>access_time</mat-icon> {{ n.horaires }}</div>
+      </div>
+      <div class="call-btn" [style.background]="n.color">
+        <mat-icon>call</mat-icon>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredNumeros.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <h3>Aucun résultat</h3>
+      <p>Aucun service trouvé pour cette recherche.</p>
+    </div>
+  </div>
+</div>

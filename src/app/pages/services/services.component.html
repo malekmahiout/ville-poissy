@@ -1,0 +1,107 @@
+<div class="services-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #004D40 0%, #00695C 100%);">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div>
+      <h1><mat-icon>family_restroom</mat-icon> Services</h1>
+      <p>Famille, sport, loisirs et culture</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button [class.active]="activeTab === 'famille'" (click)="activeTab = 'famille'">
+      <mat-icon>family_restroom</mat-icon> Famille
+    </button>
+    <button [class.active]="activeTab === 'sport'" (click)="activeTab = 'sport'">
+      <mat-icon>sports</mat-icon> Sport & Loisirs
+    </button>
+    <button [class.active]="activeTab === 'calculateur'" (click)="activeTab = 'calculateur'">
+      <mat-icon>calculate</mat-icon> Calculateur
+    </button>
+  </div>
+
+  <!-- Famille -->
+  <div *ngIf="activeTab === 'famille'" class="service-list">
+    <div class="service-card" *ngFor="let s of familleServices" matRipple (click)="s.phone ? call(s.phone) : null">
+      <div class="service-icon" [style.background]="s.color + '20'">
+        <mat-icon [style.color]="s.color">{{ s.icon }}</mat-icon>
+      </div>
+      <div class="service-info">
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.description }}</p>
+        <div class="service-meta" *ngIf="s.horaires">
+          <mat-icon>access_time</mat-icon> {{ s.horaires }}
+        </div>
+        <div class="service-meta phone" *ngIf="s.phone" [style.color]="s.color">
+          <mat-icon>call</mat-icon> {{ s.phone }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sport -->
+  <div *ngIf="activeTab === 'sport'" class="service-list">
+    <div class="service-card" *ngFor="let s of sportServices" matRipple>
+      <div class="service-icon" [style.background]="s.color + '20'">
+        <mat-icon [style.color]="s.color">{{ s.icon }}</mat-icon>
+      </div>
+      <div class="service-info">
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.description }}</p>
+        <div class="service-meta" *ngIf="s.horaires">
+          <mat-icon>access_time</mat-icon> {{ s.horaires }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calculateur QF -->
+  <div *ngIf="activeTab === 'calculateur'" class="calculator">
+    <div class="calc-header">
+      <mat-icon>calculate</mat-icon>
+      <h2>Calculateur de quotient familial</h2>
+      <p>Estimez vos tarifs municipaux (crèche, ALSH, sport...)</p>
+    </div>
+
+    <div class="calc-form">
+      <div class="slider-field">
+        <label>Revenu mensuel net du foyer : <strong>{{ revenuMensuel | currency:'EUR':'symbol':'1.0-0':'fr' }}</strong></label>
+        <input type="range" [(ngModel)]="revenuMensuel" min="500" max="8000" step="100" class="range-input">
+        <div class="range-labels">
+          <span>500 €</span>
+          <span>8 000 €</span>
+        </div>
+      </div>
+
+      <div class="slider-field">
+        <label>Nombre de personnes au foyer : <strong>{{ nombrePersonnes }}</strong></label>
+        <input type="range" [(ngModel)]="nombrePersonnes" min="1" max="8" step="1" class="range-input">
+        <div class="range-labels">
+          <span>1</span>
+          <span>8</span>
+        </div>
+      </div>
+
+      <div class="slider-field">
+        <label>Nombre d'enfants à charge : <strong>{{ nombreEnfants }}</strong></label>
+        <input type="range" [(ngModel)]="nombreEnfants" min="0" max="6" step="1" class="range-input">
+        <div class="range-labels">
+          <span>0</span>
+          <span>6</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div class="result-main">
+        <div class="qf-value">{{ quotientFamilial }}</div>
+        <div class="qf-label">Quotient Familial</div>
+      </div>
+      <div class="result-details">
+        <div class="tranche">{{ tranche }}</div>
+        <div class="tarif-estim">Tarif estimé crèche : <strong>{{ tarif }}</strong></div>
+      </div>
+      <p class="calc-note">* Estimation indicative. Le QF réel est calculé par la CAF.</p>
+    </div>
+  </div>
+</div>

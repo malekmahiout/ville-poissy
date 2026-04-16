@@ -1,0 +1,92 @@
+<div class="detail-page" *ngIf="asso">
+
+  <div class="detail-header" [style.background]="'linear-gradient(135deg,' + asso.catCouleur + ' 0%, ' + asso.catCouleur + 'CC 100%)'">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div class="header-icon">
+      <mat-icon>{{ asso.catIcon }}</mat-icon>
+    </div>
+    <div class="header-cat">{{ asso.categorie }}</div>
+    <h1>{{ asso.nom }}</h1>
+  </div>
+
+  <div class="detail-body">
+
+    <!-- Activités -->
+    <div class="info-card">
+      <div class="info-card-title"><mat-icon>info</mat-icon> À propos</div>
+      <p>{{ asso.activites }}</p>
+    </div>
+
+    <!-- Adresse -->
+    <div class="info-row clickable" (click)="ouvrirMaps()" matRipple>
+      <div class="row-icon" [style.background]="asso.catCouleur + '20'">
+        <mat-icon [style.color]="asso.catCouleur">place</mat-icon>
+      </div>
+      <div class="row-body">
+        <strong>Adresse</strong>
+        <span>{{ asso.adresse }}, {{ asso.codePostal }} Poissy</span>
+      </div>
+      <mat-icon class="row-action">map</mat-icon>
+    </div>
+
+    <!-- Téléphone -->
+    <div class="info-row clickable" *ngIf="asso.telephone" (click)="appeler()" matRipple>
+      <div class="row-icon" [style.background]="asso.catCouleur + '20'">
+        <mat-icon [style.color]="asso.catCouleur">phone</mat-icon>
+      </div>
+      <div class="row-body">
+        <strong>Téléphone</strong>
+        <span>{{ asso.telephone }}</span>
+      </div>
+      <mat-icon class="row-action">call</mat-icon>
+    </div>
+
+    <!-- Email -->
+    <div class="info-row clickable" *ngIf="asso.email" (click)="ouvrirEmail()" matRipple>
+      <div class="row-icon" [style.background]="asso.catCouleur + '20'">
+        <mat-icon [style.color]="asso.catCouleur">email</mat-icon>
+      </div>
+      <div class="row-body">
+        <strong>Email</strong>
+        <span>{{ asso.email }}</span>
+      </div>
+      <mat-icon class="row-action">open_in_new</mat-icon>
+    </div>
+
+    <!-- Site -->
+    <div class="info-row clickable" *ngIf="asso.site" (click)="ouvrirSite()" matRipple>
+      <div class="row-icon" [style.background]="asso.catCouleur + '20'">
+        <mat-icon [style.color]="asso.catCouleur">language</mat-icon>
+      </div>
+      <div class="row-body">
+        <strong>Site web</strong>
+        <span>{{ asso.site }}</span>
+      </div>
+      <mat-icon class="row-action">open_in_new</mat-icon>
+    </div>
+
+    <!-- Boutons actions -->
+    <div class="action-btns">
+      <button class="btn-maps" (click)="ouvrirMaps()" matRipple>
+        <mat-icon>map</mat-icon>Itinéraire
+      </button>
+      <button class="btn-call" *ngIf="asso.telephone" (click)="appeler()" matRipple>
+        <mat-icon>call</mat-icon>Appeler
+      </button>
+      <button class="btn-mail" *ngIf="asso.email" (click)="ouvrirEmail()" matRipple>
+        <mat-icon>email</mat-icon>Email
+      </button>
+      <button class="btn-site" *ngIf="asso.site" (click)="ouvrirSite()" matRipple>
+        <mat-icon>language</mat-icon>Site
+      </button>
+    </div>
+
+    <!-- Annuaire officiel -->
+    <div class="voir-plus" (click)="ouvrirAnnuaire()" matRipple>
+      <mat-icon>groups</mat-icon>
+      <span>Annuaire des associations — ville-poissy.fr</span>
+      <mat-icon>chevron_right</mat-icon>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,239 @@
+.webcams-page {
+  min-height: 100%;
+  background: var(--bg-light);
+  padding-bottom: 20px;
+
+  .page-header {
+    color: white;
+    padding: 20px 16px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 0 0 20px 20px;
+
+    .back-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: 19px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      mat-icon { font-size: 22px; }
+    }
+
+    p { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+  }
+}
+
+.webcams-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+
+  .webcam-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+
+    &.offline {
+      opacity: 0.65;
+      cursor: default;
+    }
+
+    .cam-preview {
+      position: relative;
+      height: 90px;
+      background: #263238;
+
+      .cam-placeholder {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          font-size: 36px;
+          height: 36px;
+          width: 36px;
+          color: rgba(255,255,255,0.3);
+        }
+      }
+
+      .cam-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 7px;
+        border-radius: 10px;
+        font-size: 9px;
+        font-weight: 700;
+
+        &.live {
+          background: rgba(244,67,54,0.85);
+          color: white;
+
+          .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+            animation: pulse 1s infinite;
+          }
+        }
+
+        &.offline {
+          background: rgba(0,0,0,0.5);
+          color: rgba(255,255,255,0.7);
+        }
+      }
+    }
+
+    .cam-info {
+      padding: 8px 10px;
+
+      h4 {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 3px;
+      }
+
+      p {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        font-size: 10px;
+        color: var(--text-secondary);
+
+        mat-icon {
+          font-size: 12px;
+          height: 12px;
+          width: 12px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.cam-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  .cam-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+  }
+
+  .cam-modal-content {
+    position: relative;
+    background: white;
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 380px;
+    overflow: hidden;
+    z-index: 1;
+
+    .cam-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #263238;
+      color: white;
+
+      h3 { font-size: 15px; font-weight: 600; }
+
+      button {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .cam-live-view {
+      background: #1a1a2e;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .live-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+
+        mat-icon {
+          font-size: 52px;
+          height: 52px;
+          width: 52px;
+          color: rgba(255,255,255,0.3);
+        }
+
+        p {
+          color: rgba(255,255,255,0.7);
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .live-badge {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          background: rgba(244,67,54,0.8);
+          color: white;
+          padding: 4px 10px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 700;
+
+          .dot {
+            width: 7px;
+            height: 7px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+          }
+        }
+
+        .demo-note {
+          font-size: 11px;
+          color: rgba(255,255,255,0.4);
+        }
+      }
+    }
+  }
+}

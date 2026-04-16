@@ -1,0 +1,52 @@
+<div class="webcams-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #263238 0%, #37474F 100%);">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div>
+      <h1><mat-icon>videocam</mat-icon> Webcams</h1>
+      <p>Flux en direct de la ville de Poissy</p>
+    </div>
+  </div>
+
+  <!-- Selected cam modal -->
+  <div class="cam-modal" *ngIf="selectedCam">
+    <div class="cam-modal-overlay" (click)="closeCam()"></div>
+    <div class="cam-modal-content">
+      <div class="cam-modal-header">
+        <h3>{{ selectedCam.name }}</h3>
+        <button (click)="closeCam()"><mat-icon>close</mat-icon></button>
+      </div>
+      <div class="cam-live-view">
+        <div class="live-placeholder">
+          <mat-icon>videocam</mat-icon>
+          <p>{{ selectedCam.name }}</p>
+          <span class="live-badge"><span class="dot"></span> EN DIRECT</span>
+          <p class="demo-note">Flux vidéo disponible en production</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="webcams-grid">
+    <div
+      class="webcam-card"
+      *ngFor="let cam of webcams"
+      [class.offline]="cam.status === 'offline'"
+      (click)="selectCam(cam)"
+      matRipple
+    >
+      <div class="cam-preview">
+        <div class="cam-placeholder">
+          <mat-icon>{{ cam.status === 'live' ? 'videocam' : 'videocam_off' }}</mat-icon>
+        </div>
+        <div class="cam-badge" [class.live]="cam.status === 'live'" [class.offline]="cam.status === 'offline'">
+          <span class="dot" *ngIf="cam.status === 'live'"></span>
+          {{ cam.status === 'live' ? 'EN DIRECT' : 'HORS LIGNE' }}
+        </div>
+      </div>
+      <div class="cam-info">
+        <h4>{{ cam.name }}</h4>
+        <p><mat-icon>place</mat-icon> {{ cam.location }}</p>
+      </div>
+    </div>
+  </div>
+</div>

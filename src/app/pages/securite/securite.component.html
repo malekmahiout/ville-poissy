@@ -1,0 +1,53 @@
+<div class="securite-page">
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1><mat-icon>local_police</mat-icon> Sécurité</h1>
+      <p>Contacts d'urgence et services de sécurité</p>
+    </div>
+  </div>
+
+  <!-- Bannière urgence -->
+  <div class="alert-banner">
+    <mat-icon>info</mat-icon>
+    <span>En cas d'urgence grave, appelez le <strong>112</strong></span>
+  </div>
+
+  <!-- Contacts d'urgence -->
+  <div class="section">
+    <h2 class="section-title">Contacts d'urgence</h2>
+    <div class="contacts-list">
+      <a *ngFor="let contact of emergencyContacts"
+        class="contact-card"
+        (click)="call(contact.number)"
+        matRipple>
+        <div class="contact-icon-wrap" [style.background]="contact.color + '20'">
+          <mat-icon [style.color]="contact.color">{{ contact.icon }}</mat-icon>
+        </div>
+        <div class="contact-info">
+          <div class="contact-name">{{ contact.name }}</div>
+          <div class="contact-number" [style.color]="contact.color">{{ contact.number }}</div>
+          <div class="contact-desc">{{ contact.description }}</div>
+        </div>
+        <div class="call-btn" [style.background]="contact.color">
+          <mat-icon>call</mat-icon>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Carte des points de sécurité -->
+  <div class="section">
+    <h2 class="section-title">Carte des points de sécurité</h2>
+    <div class="map-wrap">
+      <div #mapContainer class="leaflet-map"></div>
+    </div>
+    <div class="map-legend">
+      <span><span class="dot blue-dark"></span>Police Nationale</span>
+      <span><span class="dot blue"></span>Police Municipale</span>
+      <span><span class="dot red"></span>Pompiers</span>
+    </div>
+  </div>
+</div>

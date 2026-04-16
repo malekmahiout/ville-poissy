@@ -1,0 +1,86 @@
+<div class="ai-page">
+
+  <!-- Header -->
+  <div class="ai-header">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="ai-header-title">
+      <div class="ai-avatar">
+        <mat-icon>auto_awesome</mat-icon>
+      </div>
+      <div>
+        <h1>Poissy AI</h1>
+        <span class="ai-subtitle">Assistant de la ville de Poissy</span>
+      </div>
+    </div>
+    <button class="clear-btn" (click)="clearConversation()" *ngIf="messages.length > 0">
+      <mat-icon>restart_alt</mat-icon>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages-area">
+
+    <!-- Welcome screen -->
+    <div class="welcome" *ngIf="messages.length === 0">
+      <div class="welcome-icon">
+        <mat-icon>auto_awesome</mat-icon>
+      </div>
+      <h2>Bonjour !</h2>
+      <p>Je suis Poissy AI, votre assistant intelligent sur tout ce qui concerne la ville de Poissy.<br>Posez-moi vos questions !</p>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="suggestions" *ngIf="showSuggestions">
+      <button class="suggestion-chip" *ngFor="let s of suggestions" (click)="sendMessage(s)" matRipple>
+        {{ s }}
+      </button>
+    </div>
+
+    <!-- Chat bubbles -->
+    <div class="bubble-wrap" *ngFor="let msg of messages">
+      <!-- User -->
+      <div class="bubble user" *ngIf="msg.role === 'user'">
+        <div class="bubble-content">{{ msg.content }}</div>
+      </div>
+
+      <!-- Assistant -->
+      <div class="bubble assistant" *ngIf="msg.role === 'assistant'">
+        <div class="assistant-icon">
+          <mat-icon>auto_awesome</mat-icon>
+        </div>
+        <div class="bubble-content" *ngIf="!msg.loading">
+          <span class="bubble-text" [innerHTML]="msg.content"></span>
+        </div>
+        <div class="bubble-content loading" *ngIf="msg.loading">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div #messagesEnd></div>
+  </div>
+
+  <!-- Input bar -->
+  <div class="input-bar">
+    <button class="voice-btn" (click)="toggleVoice()" [class.recording]="isRecording" [disabled]="isLoading || isProcessingVoice" matRipple>
+      <mat-icon>{{ isProcessingVoice ? 'hourglass_empty' : (isRecording ? 'stop' : 'mic') }}</mat-icon>
+    </button>
+    <textarea
+      #inputRef
+      class="input-field"
+      [(ngModel)]="inputText"
+      (keydown)="onKeyDown($event)"
+      [placeholder]="isRecording ? 'Parlez maintenant…' : (isProcessingVoice ? 'Transcription en cours…' : 'Posez votre question sur Poissy…')"
+      rows="1"
+      [disabled]="isLoading || isRecording || isProcessingVoice">
+    </textarea>
+    <button class="send-btn" (click)="sendMessage()" [disabled]="!inputText.trim() || isLoading || isRecording || isProcessingVoice" matRipple>
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+
+</div>

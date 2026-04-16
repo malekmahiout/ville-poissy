@@ -1,0 +1,51 @@
+<div class="detail-page" *ngIf="item">
+
+  <div class="detail-header" [style.background]="'linear-gradient(135deg,' + item.couleur + ' 0%,' + item.couleur + 'cc 100%)'">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-icon">
+      <mat-icon>{{ item.icon }}</mat-icon>
+    </div>
+  </div>
+
+  <div class="detail-content">
+    <span class="tag-badge" [style.color]="item.couleur" [style.background]="item.couleur + '15'">{{ item.categorie }}</span>
+    <h1>{{ item.titre }}</h1>
+
+    <div class="info-cards">
+      <div class="info-card" *ngIf="item.date">
+        <mat-icon [style.color]="item.couleur">calendar_today</mat-icon>
+        <div>
+          <strong>Date</strong>
+          <span>{{ item.date }}</span>
+        </div>
+      </div>
+      <div class="info-card" *ngIf="item.heure">
+        <mat-icon [style.color]="item.couleur">access_time</mat-icon>
+        <div>
+          <strong>Horaire</strong>
+          <span>{{ item.heure }}</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <mat-icon [style.color]="item.couleur">place</mat-icon>
+        <div>
+          <strong>Lieu</strong>
+          <span>{{ item.lieu }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="description-box">
+      <h2>À propos</h2>
+      <p>{{ item.description }}</p>
+    </div>
+
+    <button class="open-btn" (click)="ouvrirSite()" matRipple>
+      <mat-icon>open_in_new</mat-icon>
+      Voir sur ville-poissy.fr
+    </button>
+  </div>
+
+</div>

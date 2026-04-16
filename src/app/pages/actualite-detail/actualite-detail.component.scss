@@ -1,0 +1,118 @@
+.detail-page {
+  min-height: 100%;
+  background: var(--bg-light);
+  padding-bottom: 30px;
+}
+
+.detail-header {
+  padding: 48px 16px 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border-radius: 0 0 28px 28px;
+
+  .back-btn {
+    background: rgba(255,255,255,0.25);
+    border: none;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .header-icon {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    mat-icon {
+      font-size: 48px;
+      width: 48px; height: 48px;
+      color: rgba(255,255,255,0.35);
+    }
+  }
+}
+
+.detail-content {
+  padding: 20px 16px 0;
+  margin-top: -16px;
+}
+
+.tag-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+
+  mat-icon { font-size: 16px; height: 16px; width: 16px; }
+}
+
+.resume {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  white-space: pre-wrap;
+}
+
+.source-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+
+  mat-icon { color: #9E9E9E; font-size: 24px; }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    strong { font-size: 13px; color: var(--text-primary); }
+    span   { font-size: 11px; color: var(--text-secondary); }
+  }
+}
+
+.open-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius);
+  background: #1565C0;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(21,101,192,0.3);
+
+  mat-icon { font-size: 20px; }
+  &:active { opacity: 0.88; }
+}

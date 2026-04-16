@@ -1,0 +1,59 @@
+<div class="asso-page">
+
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div>
+      <h1><mat-icon>groups</mat-icon> Associations</h1>
+      <p>{{ allAssociations.length }} associations à Poissy</p>
+    </div>
+  </div>
+
+  <!-- Recherche -->
+  <div class="search-bar">
+    <mat-icon>search</mat-icon>
+    <input type="text" placeholder="Rechercher une association…" [(ngModel)]="searchQuery">
+    <mat-icon class="clear" *ngIf="searchQuery" (click)="searchQuery=''">close</mat-icon>
+  </div>
+
+  <!-- Filtres catégorie -->
+  <div class="filter-scroll">
+    <button class="filter-chip"
+      *ngFor="let cat of categories"
+      [class.active]="activeFilter === cat"
+      (click)="activeFilter = cat">
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- Compteur -->
+  <div class="count-label" *ngIf="searchQuery || activeFilter !== 'Tous'">
+    {{ filtered.length }} résultat{{ filtered.length > 1 ? 's' : '' }}
+  </div>
+
+  <!-- Liste -->
+  <div class="asso-list">
+    <div class="asso-card" *ngFor="let a of filtered" (click)="ouvrirDetail(a)" matRipple>
+      <div class="asso-icon" [style.background]="a.catCouleur + '20'">
+        <mat-icon [style.color]="a.catCouleur">{{ a.catIcon }}</mat-icon>
+      </div>
+      <div class="asso-body">
+        <div class="asso-cat" [style.color]="a.catCouleur">{{ a.categorie }}</div>
+        <h3>{{ a.nom }}</h3>
+        <p class="asso-activites">{{ a.activites }}</p>
+        <div class="asso-adresse">
+          <mat-icon>place</mat-icon>
+          {{ a.adresse }}, {{ a.codePostal }} Poissy
+        </div>
+      </div>
+      <mat-icon class="asso-arrow">chevron_right</mat-icon>
+    </div>
+
+    <!-- Vide -->
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <h3>Aucun résultat</h3>
+      <p>Essayez un autre mot-clé ou une autre catégorie.</p>
+    </div>
+  </div>
+
+</div>

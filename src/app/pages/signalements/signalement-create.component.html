@@ -1,0 +1,89 @@
+<div class="create-page">
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div><h1>Nouveau signalement</h1><p>Décrivez le problème constaté</p></div>
+  </div>
+
+  <div class="form-container">
+    <!-- Étape 1 : Catégorie -->
+    <div class="form-section">
+      <h2 class="step-title"><span class="step-num">1</span> Catégorie *</h2>
+      <div class="categories-grid">
+        <div class="category-item" *ngFor="let cat of categories"
+          [class.selected]="selectedCategory === cat.id"
+          (click)="selectCategory(cat)" matRipple>
+          <div class="cat-icon" [style.background]="cat.color + '18'"
+            [style.border-color]="selectedCategory === cat.id ? cat.color : 'transparent'">
+            <mat-icon [style.color]="cat.color">{{ cat.icon }}</mat-icon>
+          </div>
+          <span>{{ cat.label }}</span>
+        </div>
+      </div>
+      <div class="pm-subcategories" *ngIf="showPMSubcategories">
+        <h3>Précisez :</h3>
+        <div class="pm-grid">
+          <div class="pm-item" *ngFor="let sub of modulePMSousCategories"
+            [class.selected]="selectedPMSousCategorie === sub"
+            (click)="selectedPMSousCategorie = sub" matRipple>{{ sub }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Étape 2 : Description + voix -->
+    <div class="form-section">
+      <h2 class="step-title"><span class="step-num">2</span> Description *</h2>
+      <div class="desc-toolbar">
+        <button class="voice-btn" [class.recording]="isRecording" [disabled]="isProcessingVoice"
+          (click)="isRecording ? arreterVoice() : demarrerVoice()" type="button">
+          <mat-icon>{{ isProcessingVoice ? 'hourglass_empty' : (isRecording ? 'stop_circle' : 'mic') }}</mat-icon>
+          <span>{{ isProcessingVoice ? 'Transcription...' : (isRecording ? 'Arrêter' : 'Dicter') }}</span>
+        </button>
+      </div>
+      <textarea class="description-input" [(ngModel)]="description"
+        placeholder="Décrivez le problème (type, localisation précise, danger...)..."
+        rows="4" maxlength="500"></textarea>
+      <div class="char-count">{{ description.length }}/500</div>
+    </div>
+
+    <!-- Étape 3 : Localisation + Carte -->
+    <div class="form-section">
+      <h2 class="step-title"><span class="step-num">3</span> Localisation</h2>
+      <button class="action-btn gps-btn" (click)="getLocation()" [class.loading]="isLocating" type="button">
+        <mat-icon>{{ isLocating ? 'hourglass_empty' : 'gps_fixed' }}</mat-icon>
+        <span>{{ isLocating ? 'Localisation...' : (lat ? 'Recalibrer la position' : 'Obtenir ma position GPS') }}</span>
+      </button>
+      <div class="location-result" *ngIf="lat && !isLocating">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{ lat | number:'1.4-4' }}, {{ lng | number:'1.4-4' }}</span>
+        <span class="drag-hint">Déplacez le marqueur pour affiner</span>
+      </div>
+      <div class="location-error" *ngIf="locationError">
+        <mat-icon>error_outline</mat-icon><span>{{ locationError }}</span>
+      </div>
+      <!-- Carte Leaflet -->
+      <div class="map-container" *ngIf="lat && !isLocating">
+        <div #mapContainer class="map-view"></div>
+      </div>
+    </div>
+
+    <!-- Étape 4 : Photo -->
+    <div class="form-section">
+      <h2 class="step-title"><span class="step-num">4</span> Photo <span class="optional">(optionnel)</span></h2>
+      <button class="action-btn photo-btn" *ngIf="!photo" (click)="takePhoto()" type="button">
+        <mat-icon>camera_alt</mat-icon><span>Prendre une photo</span>
+      </button>
+      <div class="photo-preview" *ngIf="photo">
+        <img [src]="photo" alt="Photo jointe">
+        <button class="remove-photo" (click)="removePhoto()" type="button"><mat-icon>close</mat-icon></button>
+      </div>
+    </div>
+
+    <!-- Envoi -->
+    <div class="form-section">
+      <button class="submit-btn" (click)="submit()" [disabled]="!isFormValid() || isSubmitting" type="button">
+        <mat-icon>send</mat-icon>
+        <span>{{ isSubmitting ? 'Envoi...' : 'Envoyer le signalement' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

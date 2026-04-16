@@ -1,0 +1,58 @@
+<div class="actualites-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1><mat-icon>article</mat-icon> Actualités</h1>
+      <p>Toutes les actualités de Poissy</p>
+    </div>
+    <button class="site-btn" (click)="ouvrirSiteOfficiel()">
+      <mat-icon>open_in_new</mat-icon>
+    </button>
+  </div>
+
+  <!-- Skeleton loading -->
+  <div class="news-list" *ngIf="loading">
+    <div class="news-skeleton" *ngFor="let i of [1,2,3,4,5,6,7,8]">
+      <div class="skel-icon"></div>
+      <div class="skel-body">
+        <div class="skel-line short"></div>
+        <div class="skel-line long"></div>
+        <div class="skel-line medium"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actual news -->
+  <div class="news-list" *ngIf="!loading">
+    <div class="news-card" *ngFor="let n of actualitesAffichees" (click)="ouvrirActualite(n)" matRipple>
+      <div class="news-tag-icon" [style.background]="n.couleur + '15'">
+        <mat-icon [style.color]="n.couleur">{{ n.icon }}</mat-icon>
+      </div>
+      <div class="news-body">
+        <span class="news-tag" [style.color]="n.couleur">{{ n.tag }}</span>
+        <p class="news-titre">{{ n.titre }}</p>
+        <p class="news-resume">{{ n.resume }}</p>
+        <span class="news-date">{{ n.date }}</span>
+      </div>
+      <mat-icon class="news-link" *ngIf="n.lien">open_in_new</mat-icon>
+    </div>
+
+    <!-- Afficher plus / moins -->
+    <button class="toggle-btn" *ngIf="actualites.length > 5" (click)="toggleAfficherTout()" matRipple>
+      <mat-icon>{{ afficherTout ? 'expand_less' : 'expand_more' }}</mat-icon>
+      {{ afficherTout ? 'Voir moins' : 'Voir les ' + actualites.length + ' actualités' }}
+    </button>
+
+    <!-- Lien vers site officiel -->
+    <div class="voir-plus-card" (click)="ouvrirSiteOfficiel()" matRipple>
+      <mat-icon>open_in_new</mat-icon>
+      <span>Voir toutes les actualités sur ville-poissy.fr</span>
+      <mat-icon>chevron_right</mat-icon>
+    </div>
+  </div>
+
+</div>

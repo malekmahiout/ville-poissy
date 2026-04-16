@@ -1,0 +1,94 @@
+<div class="list-page">
+  <!-- Header -->
+  <div class="page-header">
+    <button class="back-btn" (click)="router.navigate(['/home'])"><mat-icon>arrow_back</mat-icon></button>
+    <div class="header-info">
+      <h1>Mes Signalements</h1>
+      <p>{{ stats.total }} signalement{{ stats.total > 1 ? 's' : '' }}</p>
+    </div>
+    <div class="stat-pills">
+      <span class="pill orange">{{ stats.enCours }} en cours</span>
+      <span class="pill green">{{ stats.traite }} traités</span>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <div class="search-row">
+      <mat-icon>search</mat-icon>
+      <input class="search-input" [(ngModel)]="searchText" placeholder="Rechercher...">
+      <button *ngIf="searchText" class="clear-btn" (click)="searchText = ''"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="date-row">
+      <div class="date-field">
+        <label>Du</label>
+        <input type="date" [(ngModel)]="dateDebut">
+      </div>
+      <div class="date-field">
+        <label>Au</label>
+        <input type="date" [(ngModel)]="dateFin">
+      </div>
+      <select class="statut-select" [(ngModel)]="filtreStatut">
+        <option value="">Tous</option>
+        <option value="nouveau">Nouveau</option>
+        <option value="en-cours">En cours</option>
+        <option value="traite">Traité</option>
+      </select>
+      <button *ngIf="hasFilters" class="reset-btn" (click)="resetFilters()">
+        <mat-icon>filter_alt_off</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="signalementsFiltres.length === 0">
+    <mat-icon>{{ hasFilters ? 'search_off' : 'report_off' }}</mat-icon>
+    <h3>{{ hasFilters ? 'Aucun résultat' : 'Aucun signalement' }}</h3>
+    <p>{{ hasFilters ? 'Modifiez vos filtres.' : 'Appuyez sur + pour créer votre premier signalement.' }}</p>
+  </div>
+
+  <!-- Liste -->
+  <div class="cards-list">
+    <div class="signal-card" *ngFor="let s of signalementsFiltres">
+      <div class="card-top">
+        <div class="cat-avatar">
+          <mat-icon>{{ s.categorieIcon }}</mat-icon>
+        </div>
+        <div class="card-main-info">
+          <span class="cat-label">{{ s.categorie }}</span>
+          <span class="card-date">{{ s.dateCreation | date:'d MMM yyyy, HH:mm' }}</span>
+        </div>
+        <div class="card-right-col">
+          <span class="statut-badge" [class]="s.statut">
+            <mat-icon>{{ getStatutIcon(s.statut) }}</mat-icon>
+            {{ getStatutLabel(s.statut) }}
+          </span>
+          <button class="del-btn" (click)="deleteSignalement(s.id, $event)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <p class="desc-preview">{{ s.description }}</p>
+
+      <div class="card-footer">
+        <div class="meta-item" *ngIf="s.adresse || s.lat">
+          <mat-icon>gps_fixed</mat-icon>
+          <span>{{ s.adresse || (s.lat | number:'1.4-4') + ', ' + (s.lng | number:'1.4-4') }}</span>
+        </div>
+        <div class="meta-item intervention" *ngIf="s.dateIntervention">
+          <mat-icon>engineering</mat-icon>
+          <span>Intervention : {{ s.dateIntervention | date:'d MMM yyyy' }}</span>
+        </div>
+      </div>
+
+      <div class="photo-thumb" *ngIf="s.photo">
+        <img [src]="s.photo" alt="Photo">
+      </div>
+    </div>
+  </div>
+
+  <button class="fab" (click)="navigateToCreate()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

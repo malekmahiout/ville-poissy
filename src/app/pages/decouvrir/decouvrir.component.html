@@ -1,0 +1,137 @@
+<div class="decouvrir-page">
+
+  <!-- ══ LISTE ══ -->
+  <ng-container *ngIf="!selectedLieu">
+
+    <div class="page-header">
+      <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+      <div>
+        <h1><mat-icon>explore</mat-icon> À découvrir</h1>
+        <p>Les lieux incontournables de Poissy</p>
+      </div>
+    </div>
+
+    <div class="lieux-list">
+      <div class="lieu-card" *ngFor="let lieu of lieux" (click)="ouvrirLieu(lieu)" matRipple>
+        <div class="lieu-photo" [style.background-image]="'url(' + lieu.photo + ')'">
+          <div class="lieu-photo-overlay"></div>
+          <div class="lieu-photo-info">
+            <span class="lieu-cat" [style.background]="lieu.catCouleur">
+              <mat-icon>{{ lieu.catIcon }}</mat-icon>
+              {{ lieu.categorie }}
+            </span>
+          </div>
+        </div>
+        <div class="lieu-body">
+          <h3>{{ lieu.titre }}</h3>
+          <p>{{ lieu.sousTitre }}</p>
+          <div class="lieu-tags">
+            <span class="tag" *ngFor="let t of lieu.tags.slice(0,3)">{{ t }}</span>
+          </div>
+        </div>
+        <div class="lieu-arrow"><mat-icon>chevron_right</mat-icon></div>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ══ DÉTAIL ══ -->
+  <ng-container *ngIf="selectedLieu">
+
+    <div class="detail-photo-header" [style.background-image]="'url(' + selectedLieu.photo + ')'">
+      <div class="detail-photo-overlay"></div>
+      <button class="back-btn-float" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+      <div class="detail-photo-caption">
+        <span class="detail-cat-badge" [style.background]="selectedLieu.catCouleur">
+          <mat-icon>{{ selectedLieu.catIcon }}</mat-icon>
+          {{ selectedLieu.categorie }}
+        </span>
+        <h1>{{ selectedLieu.titre }}</h1>
+        <p>{{ selectedLieu.sousTitre }}</p>
+      </div>
+    </div>
+
+    <div class="detail-content">
+
+      <!-- Bouton audio -->
+      <div class="audio-bar">
+        <div class="audio-info">
+          <mat-icon [style.color]="isPlaying ? '#C62828' : '#1565C0'">
+            {{ isPlaying ? 'stop_circle' : 'volume_up' }}
+          </mat-icon>
+          <span>{{ isPlaying ? 'Lecture en cours…' : 'Écouter la présentation' }}</span>
+        </div>
+        <button class="audio-btn" [class.playing]="isPlaying" (click)="toggleAudio()" matRipple>
+          <mat-icon>{{ isPlaying ? 'stop' : 'play_arrow' }}</mat-icon>
+          {{ isPlaying ? 'Arrêter' : 'Écouter' }}
+        </button>
+      </div>
+
+      <!-- Texte de présentation -->
+      <div class="description-box">
+        <h2>Présentation</h2>
+        <p>{{ selectedLieu.texteAudio }}</p>
+      </div>
+
+      <!-- Infos pratiques -->
+      <div class="infos-pratiques">
+        <h2>Infos pratiques</h2>
+
+        <div class="info-row clickable" (click)="ouvrirMaps(selectedLieu)" matRipple>
+          <mat-icon [style.color]="selectedLieu.catCouleur">place</mat-icon>
+          <div>
+            <strong>Adresse</strong>
+            <span>{{ selectedLieu.adresse }}</span>
+          </div>
+          <mat-icon class="info-action">map</mat-icon>
+        </div>
+
+        <div class="info-row" *ngIf="selectedLieu.horaires">
+          <mat-icon [style.color]="selectedLieu.catCouleur">access_time</mat-icon>
+          <div>
+            <strong>Horaires</strong>
+            <span>{{ selectedLieu.horaires }}</span>
+          </div>
+        </div>
+
+        <div class="info-row" *ngIf="selectedLieu.tarif">
+          <mat-icon [style.color]="selectedLieu.catCouleur">euro</mat-icon>
+          <div>
+            <strong>Tarifs</strong>
+            <span>{{ selectedLieu.tarif }}</span>
+          </div>
+        </div>
+
+        <div class="info-row clickable" *ngIf="selectedLieu.telephone" (click)="appeler(selectedLieu.telephone!)" matRipple>
+          <mat-icon [style.color]="selectedLieu.catCouleur">phone</mat-icon>
+          <div>
+            <strong>Téléphone</strong>
+            <span>{{ selectedLieu.telephone }}</span>
+          </div>
+          <mat-icon class="info-action">call</mat-icon>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="tags-section">
+        <span class="tag" *ngFor="let t of selectedLieu.tags">{{ t }}</span>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-btns">
+        <button class="btn-maps" (click)="ouvrirMaps(selectedLieu)" matRipple>
+          <mat-icon>map</mat-icon>Itinéraire
+        </button>
+        <button class="btn-site" *ngIf="selectedLieu.siteWeb" (click)="ouvrirSite(selectedLieu)" matRipple>
+          <mat-icon>open_in_new</mat-icon>Site officiel
+        </button>
+        <button class="btn-site" *ngIf="!selectedLieu.siteWeb" (click)="ouvrirSite(selectedLieu)" matRipple>
+          <mat-icon>language</mat-icon>ville-poissy.fr
+        </button>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

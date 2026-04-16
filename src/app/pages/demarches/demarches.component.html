@@ -1,0 +1,33 @@
+<div class="demarches-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div>
+      <h1><mat-icon>description</mat-icon> Démarches</h1>
+      <p>Services administratifs en ligne</p>
+    </div>
+  </div>
+
+  <div class="info-banner">
+    <mat-icon>open_in_new</mat-icon>
+    <span>Cliquez sur une démarche pour accéder directement au service sur <strong>ville-poissy.fr</strong></span>
+  </div>
+
+  <div class="list-container">
+    <div class="demarche-card"
+      *ngFor="let d of demarches"
+      (click)="openDemarche(d)"
+      matRipple>
+      <div class="demarche-icon" [style.background]="d.color + '20'">
+        <mat-icon [style.color]="d.color">{{ d.icon }}</mat-icon>
+      </div>
+      <div class="demarche-info">
+        <h3>{{ d.title }}</h3>
+        <p>{{ d.description }}</p>
+      </div>
+      <div class="demarche-action">
+        <span class="badge-dispo">En ligne</span>
+        <mat-icon>chevron_right</mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="commerce-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-title">
+      <h1><mat-icon>storefront</mat-icon> Commerces</h1>
+      <p>{{ filteredCommerces.length }} établissements à Poissy</p>
+    </div>
+    <button class="pdf-btn" (click)="ouvrirAnnuaire()">
+      <mat-icon>picture_as_pdf</mat-icon>
+    </button>
+  </div>
+
+  <!-- Bannière promo -->
+  <div class="promo-banner">
+    <mat-icon>favorite</mat-icon>
+    <div>
+      <strong>Soutenez le commerce local !</strong>
+      <span>Découvrez et faites vivre les commerçants de Poissy</span>
+    </div>
+  </div>
+
+  <!-- Recherche -->
+  <div class="search-bar">
+    <mat-icon>search</mat-icon>
+    <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="Rechercher un commerce, service…">
+    <button *ngIf="searchQuery" (click)="searchQuery=''; onSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Catégories -->
+  <div class="categories-scroll">
+    <button class="cat-chip" *ngFor="let cat of usedCategories"
+      [class.active]="selectedCategory === cat"
+      (click)="filterByCategory(cat)" matRipple>
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- Liste -->
+  <div class="commerce-list">
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filteredCommerces.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <p>Aucun résultat pour "{{ searchQuery }}"</p>
+    </div>
+
+    <div class="commerce-card" *ngFor="let c of filteredCommerces" (click)="ouvrirDetail(c)" matRipple>
+      <div class="commerce-icon" [style.background]="c.catCouleur + '18'">
+        <mat-icon [style.color]="c.catCouleur">{{ c.catIcon }}</mat-icon>
+      </div>
+      <div class="commerce-info">
+        <div class="commerce-cat" [style.color]="c.catCouleur">{{ c.categorie }}</div>
+        <h3>{{ c.nom }}</h3>
+        <div class="commerce-adresse">
+          <mat-icon>place</mat-icon>
+          <span>{{ c.adresse }}</span>
+        </div>
+        <div class="commerce-horaires" *ngIf="c.horaires">
+          <mat-icon>access_time</mat-icon>
+          <span>{{ c.horaires }}</span>
+        </div>
+      </div>
+      <div class="commerce-actions">
+        <button class="call-btn" *ngIf="c.telephone" (click)="$event.stopPropagation(); appeler(c.telephone!)" matRipple>
+          <mat-icon>phone</mat-icon>
+        </button>
+        <mat-icon class="chevron">chevron_right</mat-icon>
+      </div>
+    </div>
+
+  </div>
+
+</div>

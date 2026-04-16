@@ -1,0 +1,37 @@
+<div class="detail-page" *ngIf="item">
+
+  <!-- Header coloré -->
+  <div class="detail-header" [style.background]="'linear-gradient(135deg,' + item.couleur + ' 0%,' + item.couleur + 'cc 100%)'">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-icon">
+      <mat-icon>{{ item.icon }}</mat-icon>
+    </div>
+  </div>
+
+  <!-- Contenu -->
+  <div class="detail-content">
+    <span class="tag-badge" [style.color]="item.couleur" [style.background]="item.couleur + '15'">{{ item.tag }}</span>
+    <h1>{{ item.titre }}</h1>
+    <div class="meta-row" *ngIf="item.date">
+      <mat-icon>calendar_today</mat-icon>
+      <span>{{ item.date }}</span>
+    </div>
+    <p class="resume">{{ item.resume }}</p>
+
+    <div class="source-box">
+      <mat-icon>language</mat-icon>
+      <div>
+        <strong>Source officielle</strong>
+        <span>ville-poissy.fr</span>
+      </div>
+    </div>
+
+    <button class="open-btn" (click)="ouvrirSite()" matRipple>
+      <mat-icon>open_in_new</mat-icon>
+      Voir l'article complet sur ville-poissy.fr
+    </button>
+  </div>
+
+</div>

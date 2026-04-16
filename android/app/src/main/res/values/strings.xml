@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ville de Poissy</string>
+    <string name="title_activity_main">Ville de Poissy</string>
+    <string name="package_name">fr.poissy.mairie</string>
+    <string name="custom_url_scheme">fr.poissy.mairie</string>
+</resources>

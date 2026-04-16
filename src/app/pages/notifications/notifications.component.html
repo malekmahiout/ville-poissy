@@ -1,0 +1,40 @@
+<div class="notifications-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #0D47A1 0%, #1565C0 100%);">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div class="header-text">
+      <h1><mat-icon>notifications</mat-icon> Alertes &amp; Notifications</h1>
+      <p>Restez informé des actualités de Poissy</p>
+    </div>
+    <button class="read-all-btn" (click)="markAllAsRead()">
+      <mat-icon>done_all</mat-icon>
+    </button>
+  </div>
+
+  <div class="notif-list">
+    <div
+      class="notif-card"
+      *ngFor="let n of notifications"
+      [class.unread]="!n.read"
+      (click)="markAsRead(n.id)"
+      matRipple
+    >
+      <div class="notif-icon" [style.background]="getColor(n.type) + '20'">
+        <mat-icon [style.color]="getColor(n.type)">{{ getIcon(n.type) }}</mat-icon>
+      </div>
+      <div class="notif-content">
+        <div class="notif-header">
+          <h3>{{ n.title }}</h3>
+          <span class="unread-dot" *ngIf="!n.read"></span>
+        </div>
+        <p>{{ n.message }}</p>
+        <span class="notif-date">{{ n.date | date:'dd/MM/yyyy HH:mm' : '' : 'fr' }}</span>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="notifications.length === 0">
+      <mat-icon>notifications_off</mat-icon>
+      <h3>Aucune notification</h3>
+      <p>Vous êtes à jour ! Revenez plus tard pour les dernières actualités.</p>
+    </div>
+  </div>
+</div>

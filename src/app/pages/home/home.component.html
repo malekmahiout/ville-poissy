@@ -1,0 +1,115 @@
+<div class="home-page">
+
+  <!-- ═══ HERO CAROUSEL ═══ -->
+  <div class="hero">
+    <div class="hero-bg" *ngFor="let s of heroSlides; let i = index"
+      [class.active]="i === currentSlide"
+      [style.background-image]="'url(' + s.photo + ')'">
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-top-bar">
+      <div class="hero-brand">
+        <img class="city-logo" src="assets/photos/logo-poissy.png" alt="Logo Poissy">
+      </div>
+      <button class="hero-notif-btn" (click)="navigate('/notifications')">
+        <mat-icon [matBadge]="(unreadCount$ | async) || null" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+      </button>
+    </div>
+
+    <div class="hero-content">
+      <h1 class="hero-titre">{{ heroSlides[currentSlide].titre }}</h1>
+      <p class="hero-sous-titre">{{ heroSlides[currentSlide].sousTitre }}</p>
+    </div>
+
+    <div class="hero-dots">
+      <span *ngFor="let s of heroSlides; let i = index"
+        class="dot" [class.active]="i === currentSlide" (click)="setSlide(i)">
+      </span>
+    </div>
+
+    <div class="hero-date-bar">
+      <mat-icon>calendar_today</mat-icon>
+      <span>{{ dateLabel }}</span>
+    </div>
+  </div>
+
+  <!-- ═══ BANNERS RAPIDES ═══ -->
+  <div class="quick-banners">
+    <div class="ai-banner" (click)="navigate('/poissy-ai')" matRipple>
+      <div class="ai-banner-left">
+        <div class="ai-banner-icon"><mat-icon>auto_awesome</mat-icon></div>
+        <div>
+          <strong>Poissy AI</strong>
+          <span>Posez vos questions sur la ville</span>
+        </div>
+      </div>
+      <mat-icon class="ai-chevron">chevron_right</mat-icon>
+    </div>
+    <div class="signal-banner" (click)="navigate('/signalements/nouveau')" matRipple>
+      <div class="signal-left">
+        <div class="signal-icon"><mat-icon>add_alert</mat-icon></div>
+        <div>
+          <strong>Signaler un problème</strong>
+          <span>Voirie, eau, dépôt sauvage…</span>
+        </div>
+      </div>
+      <div class="signal-right">
+        <div class="signal-stats">
+          <span class="stat-pill orange">{{ signalStats.enCours }} en cours</span>
+          <span class="stat-pill green">{{ signalStats.traite }} traités</span>
+        </div>
+        <mat-icon class="chevron">chevron_right</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ GALERIE — DÉCOUVRIR POISSY ═══ -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Découvrir Poissy</h2>
+      <button class="see-all-btn" (click)="navigate('/decouvrir')">Tout voir</button>
+    </div>
+    <div class="gallery-scroll">
+      <div class="gallery-item" *ngFor="let s of heroSlides" (click)="naviguerDecouvrir(s)">
+        <img [src]="s.photo" [alt]="s.titre" loading="lazy">
+        <div class="gallery-caption"><span>{{ s.titre }}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICES ═══ -->
+  <section class="section">
+    <div class="section-header"><h2>Nos services</h2></div>
+    <div class="services-grid">
+      <div class="service-item" *ngFor="let s of services"
+        (click)="navigate(s.route)" matRipple
+        [class.service-ai]="s.route === '/poissy-ai'">
+        <div class="service-icon" [style.background]="s.bg">
+          <mat-icon [style.color]="s.couleur">{{ s.icon }}</mat-icon>
+        </div>
+        <span>{{ s.titre }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="home-footer">
+    <img src="assets/photos/logo-poissy.png" alt="Poissy" class="footer-logo">
+    <p>Hôtel de Ville — Place de la République, 78300 Poissy</p>
+    <p>☎ 01 39 22 31 00</p>
+  </div>
+
+</div>
+
+<!-- ═══ VISIONNEUSE PHOTO FULLSCREEN ═══ -->
+<div class="photo-viewer" *ngIf="photoOuverte" (click)="fermerGalerie()">
+  <button class="viewer-close" (click)="fermerGalerie()"><mat-icon>close</mat-icon></button>
+  <div class="viewer-content" (click)="$event.stopPropagation()">
+    <img [src]="photoOuverte.photo" [alt]="photoOuverte.titre">
+    <div class="viewer-caption">
+      <h3>{{ photoOuverte.titre }}</h3>
+      <p>{{ photoOuverte.sousTitre }}</p>
+    </div>
+  </div>
+</div>

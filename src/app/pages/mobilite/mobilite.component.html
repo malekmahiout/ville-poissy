@@ -1,0 +1,157 @@
+<div class="mobilite-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #BF360C 0%, #E65100 100%);">
+    <button class="back-btn" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div>
+      <h1><mat-icon>directions_car</mat-icon> Mobilité</h1>
+      <p>Trafic, parkings et transports en commun</p>
+    </div>
+  </div>
+
+  <!-- Tableau de départs SNCF -->
+  <div class="section">
+    <h2 class="section-title">
+      <mat-icon>train</mat-icon> Prochains départs
+    </h2>
+
+    <div class="departure-board">
+
+      <!-- En-tête panneau gare -->
+      <div class="board-header">
+        <div class="board-station">
+          <mat-icon>train</mat-icon>
+          GARE DE POISSY
+        </div>
+        <div class="board-clock">{{ now | date:'HH:mm:ss' }}</div>
+      </div>
+
+      <!-- Colonnes -->
+      <div class="board-cols">
+        <span>HEURE</span>
+        <span>MISSION</span>
+        <span>DESTINATION</span>
+        <span class="col-voie">VOIE</span>
+        <span>ÉTAT</span>
+      </div>
+
+      <!-- Chargement -->
+      <div class="board-loading" *ngIf="loadingTrains">
+        <div class="spinner"></div>
+        <span>Chargement en temps réel…</span>
+      </div>
+
+      <!-- Erreur -->
+      <div class="board-error" *ngIf="!loadingTrains && errorTrains">
+        <mat-icon>wifi_off</mat-icon>
+        <span>Données indisponibles</span>
+        <button (click)="retryTrains()">Réessayer</button>
+      </div>
+
+      <!-- 6 prochains départs -->
+      <div class="board-row"
+        *ngFor="let d of departures | slice:0:6"
+        [class.delayed]="d.isDelayed"
+        [class.cancelled]="d.isCancelled">
+
+        <!-- Heure -->
+        <div class="col-time">
+          <span class="time-scheduled" [class.struck]="d.isCancelled">{{ d.scheduledTime }}</span>
+          <span class="time-real" *ngIf="d.isDelayed">{{ d.realTime }}</span>
+        </div>
+
+        <!-- Badge ligne + mission -->
+        <div class="col-mission">
+          <span class="line-badge"
+            [style.background]="d.lineColor"
+            [style.color]="d.textColor">
+            {{ d.line }}
+          </span>
+          <span class="mission-code">{{ d.missionCode }}</span>
+        </div>
+
+        <!-- Destination -->
+        <div class="col-dest">{{ d.destination }}</div>
+
+        <!-- Voie -->
+        <div class="col-voie">{{ d.platform || '—' }}</div>
+
+        <!-- État -->
+        <div class="col-status">
+          <span class="status-badge"
+            [class.ontime]="d.status === 'ontime'"
+            [class.delayed]="d.status === 'delayed'"
+            [class.cancelled]="d.status === 'cancelled'">
+            <ng-container [ngSwitch]="d.status">
+              <ng-container *ngSwitchCase="'ontime'">À l'heure</ng-container>
+              <ng-container *ngSwitchCase="'delayed'">+{{ d.delayMinutes }} min</ng-container>
+              <ng-container *ngSwitchCase="'cancelled'">Supprimé</ng-container>
+            </ng-container>
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Source -->
+      <div class="board-footer">
+        <mat-icon>update</mat-icon>
+        Données temps réel IDFM · Actualisé toutes les 60s
+      </div>
+    </div>
+  </div>
+
+  <!-- Trafic -->
+  <div class="section">
+    <h2 class="section-title">
+      <mat-icon>traffic</mat-icon> État du trafic
+      <span class="realtime-badge">Temps réel</span>
+    </h2>
+
+    <div class="trafic-loading" *ngIf="loadingTraffic">
+      <div class="mini-spinner"></div>
+      <span>Chargement du trafic…</span>
+    </div>
+
+    <div class="trafic-list" *ngIf="!loadingTraffic">
+      <div class="trafic-item" *ngFor="let t of trafficSegments">
+        <div class="road-info">
+          <span class="road-badge">{{ t.road }}</span>
+          <span class="road-dir">{{ t.direction }}</span>
+        </div>
+        <div class="trafic-speed" *ngIf="t.speed > 0">
+          <span class="speed-val">{{ t.speed }}</span>
+          <span class="speed-unit">km/h</span>
+        </div>
+        <span class="trafic-status" [style.color]="t.color" [style.background]="t.color + '20'">
+          <span class="dot" [style.background]="t.color"></span>
+          {{ t.label }}
+        </span>
+      </div>
+    </div>
+
+    <div class="trafic-source" *ngIf="!loadingTraffic">
+      <mat-icon>update</mat-icon> Données TomTom · Actualisé toutes les 2 min
+    </div>
+  </div>
+
+  <!-- Parkings -->
+  <div class="section">
+    <h2 class="section-title">
+      <mat-icon>local_parking</mat-icon> Disponibilité parkings
+    </h2>
+    <div class="parking-list">
+      <div class="parking-card" *ngFor="let p of parkings">
+        <div class="parking-header">
+          <div class="parking-name">{{ p.name }}</div>
+          <div class="parking-type" [class.payant]="p.type === 'Payant'">{{ p.type }}</div>
+        </div>
+        <div class="parking-bar-wrap">
+          <div class="parking-bar">
+            <div class="parking-fill" [style.width]="getParkingPercent(p) + '%'" [style.background]="p.color"></div>
+          </div>
+          <span class="parking-count" [style.color]="p.color">{{ p.dispo }} / {{ p.total }}</span>
+        </div>
+        <div class="parking-label" [style.color]="p.color">{{ p.dispo }} places disponibles ({{ getParkingPercent(p) }}%)</div>
+      </div>
+    </div>
+  </div>
+
+</div>

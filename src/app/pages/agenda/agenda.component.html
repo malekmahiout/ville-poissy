@@ -1,0 +1,63 @@
+<div class="agenda-page">
+  <div class="page-header" style="background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 100%);">
+    <button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h1><mat-icon>event</mat-icon> Agenda</h1>
+      <p>Événements et manifestations à Poissy</p>
+    </div>
+    <button class="site-btn" (click)="ouvrirAgendaOfficiel()">
+      <mat-icon>open_in_new</mat-icon>
+    </button>
+  </div>
+
+  <!-- Skeleton loading -->
+  <div class="events-container" *ngIf="loading">
+    <div class="event-skeleton" *ngFor="let i of [1,2,3,4]">
+      <div class="skel-date"></div>
+      <div class="skel-body">
+        <div class="skel-line short"></div>
+        <div class="skel-line long"></div>
+        <div class="skel-line medium"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="events-container" *ngIf="!loading">
+    <div class="event-card" *ngFor="let event of eventsAffiches" (click)="ouvrirEvenement(event)" matRipple>
+      <div class="event-date-col">
+        <div class="date-box" [style.background]="event.couleur">
+          <mat-icon>{{ event.icon }}</mat-icon>
+        </div>
+      </div>
+      <div class="event-content">
+        <div class="event-category" [style.color]="event.couleur">
+          <mat-icon [style.color]="event.couleur">{{ event.icon }}</mat-icon>
+          {{ event.categorie }}
+        </div>
+        <h3>{{ event.titre }}</h3>
+        <div class="event-meta">
+          <span *ngIf="event.date"><mat-icon>calendar_today</mat-icon> {{ event.date }}</span>
+          <span *ngIf="event.heure"><mat-icon>access_time</mat-icon> {{ event.heure }}</span>
+          <span><mat-icon>place</mat-icon> {{ event.lieu }}</span>
+        </div>
+        <p class="event-desc">{{ event.description }}</p>
+      </div>
+      <mat-icon class="event-link" *ngIf="event.lien">open_in_new</mat-icon>
+    </div>
+
+    <!-- Afficher plus / moins -->
+    <button class="toggle-btn" *ngIf="events.length > 5" (click)="toggleAfficherTout()" matRipple>
+      <mat-icon>{{ afficherTout ? 'expand_less' : 'expand_more' }}</mat-icon>
+      {{ afficherTout ? 'Voir moins' : 'Voir les ' + events.length + ' événements' }}
+    </button>
+
+    <!-- Lien vers agenda officiel -->
+    <div class="voir-plus-card" (click)="ouvrirAgendaOfficiel()" matRipple>
+      <mat-icon>open_in_new</mat-icon>
+      <span>Voir tout l'agenda sur ville-poissy.fr</span>
+      <mat-icon>chevron_right</mat-icon>
+    </div>
+  </div>
+</div>
