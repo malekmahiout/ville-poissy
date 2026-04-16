@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Capacitor iOS
         run: |
-          npm install @capacitor/ios
+          npm install @capacitor/ios --legacy-peer-deps
           npx cap add ios || true
           npx cap sync ios
 
