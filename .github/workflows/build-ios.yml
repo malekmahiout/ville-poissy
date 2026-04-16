@@ -1,0 +1,63 @@
+name: Build iOS IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Inject Groq API key
+        run: |
+          sed -i '' "s|%%GROQ_API_KEY%%|${{ secrets.GROQ_API_KEY }}|g" src/environments/environment.prod.ts
+
+      - name: Build Angular app
+        run: npm run build -- --configuration=production
+
+      - name: Install Capacitor iOS
+        run: |
+          npm install @capacitor/ios
+          npx cap add ios || true
+          npx cap sync ios
+
+      - name: Build IPA (unsigned)
+        run: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath build/App.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            archive
+
+          xcodebuild \
+            -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportPath build/output \
+            -exportOptionsPlist ios/ExportOptions.plist \
+            || true
+
+          # Package manually as unsigned IPA
+          cd build/App.xcarchive/Products/Applications
+          mkdir -p Payload
+          cp -r App.app Payload/
+          zip -r ../../../../build/VillePoissy.ipa Payload/
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: VillePoissy-IPA
+          path: build/VillePoissy.ipa

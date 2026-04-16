@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
-const DEFAULT_KEY = '';
+const DEFAULT_KEY = environment.groqApiKey;
 
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
