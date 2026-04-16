@@ -30,7 +30,16 @@ jobs:
         run: |
           npm install @capacitor/ios@6 --legacy-peer-deps
           npx cap add ios || true
-          npx cap sync ios
+
+      - name: Set iOS deployment target
+        run: |
+          sed -i '' "s/platform :ios, '[0-9.]*/platform :ios, '14.0/" ios/App/Podfile
+          /usr/libexec/PlistBuddy -c "Set :IPHONEOS_DEPLOYMENT_TARGET 14.0" ios/App/App/Info.plist || true
+
+      - name: Pod install
+        run: |
+          cd ios/App
+          pod install --repo-update
 
       - name: Build IPA (unsigned)
         run: |
